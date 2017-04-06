@@ -140,16 +140,107 @@ passport.deserializeUser(function (id, done) {
 });
 
 
+
+
 app.get('/mywelcomepage', isLoggedIn,function(req,res){
      console.log("In GEt welcome page", req.user);
+     res.render('mywelcomepage', {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user
+
+        });
+    })
+   /* res.render('mywelcomepage', {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user
+
+    });*/
+
+
+app.post('/mywelcomepage',function(req,res){
+    console.log("INSIDE POST /WELCOME" + JSON.stringify(req.body.query));
+    var api_key = 'AIzaSyDpTAXl2VTBWoF-aRi7BG4xXHG_GiuEYms';
+    var querysearch = JSON.stringify(req.body.query);
+    console.log("In Post welcome page", req.user);
+    console.log("In Post welcome page", req.isAuthenticated());
+ 
+       request({
+         url: `https://maps.googleapis.com/maps/api/place/textsearch/xml?query=${querysearch}&key=AIzaSyDpTAXl2VTBWoF-aRi7BG4xXHG_GiuEYms`
+        }, function (error, response, body) {
+        if (error) {
+        console.log(error);
+        } else {
+
+        //console.log(response.body);
+        var jsonresultset = parser.toJson(response.body);
+        var jresultset=JSON.parse(jsonresultset);
+        //console.log(jresultset);
+        console.log(jresultset.PlaceSearchResponse.result);
+
+
+        if(jresultset.PlaceSearchResponse.status==="OVER_QUERY_LIMIT"){
+
+             res.render('mywelcomepage', {
+                 isAuthenticated: req.isAuthenticated(),
+                 user: req.user,
+                 results: jresultset.PlaceSearchResponse
+
+             });
+
+        }else{
+         
+       
+        console.log("AM I IN the ELSE LOOP");
+        console.log(jresultset.PlaceSearchResponse.result);
+
+         retStatus = 'Success';
+         res.send({
+                retStatus: retStatus,
+                results: jresultset.PlaceSearchResponse.result,
+                redirectTo: '/mywelcomepage',
+                msg: 'Just go there please' // this should help
+            });
+
+
+
+
+
+          /*   res.render('mywelcomepage', {
+                 isAuthenticated: req.isAuthenticated(),
+                 user: req.user,
+                 results: jresultset.PlaceSearchResponse.result,
+                 msg: 'Just go there please',
+                  retStatus: retStatus
+
+             }); */
+            }
+         }   
+        });
+
+
+   /*  res.render('mywelcomepage', {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user
+
+    });*/
+})
+
+
+
+app.get('/mywelcomepage/search', isLoggedIn, function(req,res){
+    
+     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    console.log("AM I COMING IN THE MY WELCOME PAGE ");
 
      request({
-    url: g1url
+         url: g1url
   
-}, function (error, response, body) {
-    if (error) {
+        }, function (error, response, body) {
+        if (error) {
         console.log(error);
-    } else {
+        } else {
 
         //console.log(response.body);
         var jsonresultset = parser.toJson(response.body);
@@ -173,48 +264,27 @@ app.get('/mywelcomepage', isLoggedIn,function(req,res){
 
 
          retStatus = 'Success';
-            //res.send('done');
-
-            // var value=res.json(data);
-            // res.redirect('/team');
-            /*res.send({
-                retStatus: retStatus,
-                data: JSON.parse(jsonresultset),
-                isAuthenticated: req.isAuthenticated(),
-                 user: req.user,
-                redirectTo: '/mywelcomepage',
-                msg: 'Just go there please' // this should help
-            });*/
-
-            res.render('mywelcomepage', {
+         res.render('mywelcomepage', {
                  isAuthenticated: req.isAuthenticated(),
                  user: req.user,
-                 results: jresultset.PlaceSearchResponse.result
+                 results: JSON.parse(jresultset.PlaceSearchResponse.result),
+                 msg: 'Just go there please',
+                  retStatus: retStatus
 
              });
             }
+         }
 
-       /* var arr = JSON.parse(response.body);
-        var obj = arr[0];
-        console.log(obj);*/
-    }
-})
-   /* res.render('mywelcomepage', {
-        isAuthenticated: req.isAuthenticated(),
-        user: req.user
 
-    });*/
-})
+    })
+});
 
-app.post('/mywelcomepage',function(req,res){
-    console.log("In Post welcome page", req.user);
-    console.log("In Post welcome page", req.isAuthenticated());
-     res.render('mywelcomepage', {
-        isAuthenticated: req.isAuthenticated(),
-        user: req.user
+///////////----Logout route----------/////////////////////////////
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
-    });
-})
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {

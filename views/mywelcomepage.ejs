@@ -32,52 +32,31 @@
                             <input class="inputsearch" id="inputsearch" type="text" placeholder=" Enter Place Name">
                            
                            <div class="options">
-                           <label title="Attractions">
-                            <input type="checkbox" name="Attraction"><span>POI</span>
-                            </label>
-
-                             <label title="Restuarant">
-                            <input type="checkbox" name="Restuarant"><span>Restuarant</span>
-                            </label>
-
-                             <label title="Bar">
-                            <input type="checkbox" name="Bar"><span>Bar</span><br>
-                            </label>
-
-                             <label title="Accomadation">
-                            <input type="checkbox" name="Accomadation"><span>Accomadation</span>
-                            </label>
-                           
-                              <label title="Kidsactivities">
-                            <input type="checkbox" name="Kidsactivities"><span>Kids activities</span>
-                            </label>
-                           
-                           
+                           <select class="selectoptions">
+                              <option value="attraction">POI</option>
+                              <option value="restuarant">Restuarant</option>
+                              <option value="bar">Bar</option>
+                              <option value="accomadation">Accomadation</option>
+                              <option value="kidsactivities">Kids Activities</option>
+                            </select>
                             </div>
                             <button class="searchbutton" id="search" name="search" value="search">Search</button>
+        </form>                      
 
-       <% if(results.status === 'OVER_QUERY_LIMIT') {%>
-       		<p >You have exceeded your daily request quota for this API. <%= results.status%>   </p>
-       <%} else {%>
+         <div class="displayresults">
+         <ul>
+            
 
-        	 <div class="displayresults">
-        	 <ul>	
-			       <%  for(var i=0; i<results.length; i++) {%>
-			          <div class="displaywishresults"> 
-				          <li><%=results[i].name%></li>		          
-				          <li><%=results[i].formatted_address%></li>
-				          <li><%=results[i].rating%><sup><span class="stars"><%=results[i].rating%></span></sup></li>  
-				          <% if(results[i].opening_hours) {if(results[i].opening_hours.open_now && results[i].opening_hours.open_now === 'true'){ %>
-				   			      <li> <span>OPEN</span></li>
-				         	<% }} else{%> <li> <span>CLOSED</span></li> <%}%>
-				      </div>
-	        <% } } %>
+         </ul>
+
+         </div>
+
 
         
         	</ul>	
 
         	</div>
-       </form>
+     
 
 
 
@@ -87,8 +66,81 @@
  <script type="text/javascript">
  	  $(document).ready(function () {
  	  	 $('span.stars').stars();
- 	  	
- 	  });
+       console.log("Am able to see this message");
+
+
+
+        $(".form-search").submit(function(event){
+            event.preventDefault();
+            var selectOptionVal='';
+            console.log("Am able to login to form search");
+            var searchVal = $('#inputsearch').val();
+            console.log("search Val" + searchVal);
+            console.log("Select option inside console");
+            selectOptionVal = $('.selectoptions option:selected').val();
+            var querykeyword = selectOptionVal + " in " + searchVal;
+            console.log(querykeyword);
+            if(searchVal.length > 0 && searchVal !== ''){
+                 $.ajax({
+                     url : '/mywelcomepage',          
+                     cache:false,
+                     type:"POST",
+                     data:{
+                      query : querykeyword,
+                        },
+                     dataType:"json",
+                     success: function (response) {
+                       console.log(response.results);
+                        if (response.redirectTo && response.msg == 'Just go there please') {
+                          console.log(response.results);
+                           var results =  response.results;
+                           var placeOpen='';   
+                               $(".displayresults").html('');
+                                $.each(results, function (i, items) {
+
+                                  if(items.opening_hours){
+                                    if(items.opening_hours.open_now && items.opening_hours.open_now === 'true'){
+                                        placeOpen = 'OPEN';
+                                    }else {
+                                        placeOpen = 'CLOSED';
+                                    }
+                                  }
+
+                                    //console.log(items);
+                                 
+                                    $("<div />", {"class": "displaywishresults"})
+                                    .append(items.name)
+                                    .append('<br />')
+                                    .append(items.formatted_address)
+                                    .append('<br />')
+                                    .append(items.rating)
+                                    .append('<sup><span class="stars">'+ items.rating+ '</span><sup>')
+                                    .append('<br />')
+                                    .append(placeOpen)
+                                    .appendTo(".displayresults");
+                                });
+                              //$(".displayresults").append(trHTML);
+
+                        }
+
+                        console.log("success");
+                      },
+                      fail: function (jqXHR, error, errorThrown) {
+                                      console.log(jqXHR);
+                                      console.log(error);
+                                      console.log(errorThrown);
+                    }
+                });      
+
+            }
+
+            else {
+              $(".displayresults").empty();
+              $(".displayresults").append('<span id="error_add_here">Please enter a location name to search</span>');
+            }
+         });
+      
+	  });
 
  	   $.fn.stars = function() {
     	return $(this).each(function() {

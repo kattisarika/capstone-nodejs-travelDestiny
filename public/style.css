@@ -126,6 +126,8 @@ aside{
 	background-color:#8FBC8F;
 }
 
+
+
 #tablet2{
 	background-color:#8FBC8F;
 }
@@ -217,6 +219,7 @@ aside{
 	width: 350px;
     height: 40px;
     border: 3px solid darkgreen;
+    border-radius:3px;
     margin: 0 auto;
     text-align: center;
     font-size: 14px;
@@ -224,12 +227,14 @@ aside{
 
 .searchbar .searchbutton{ 
 	width: 80px;
-    height: 45px;
+    height: 40px;
     background-color: aliceblue;
-    border: 3px solid darkblue;
+     border:3px solid darkgreen;
+     border-radius:3px;
     padding:5px;
     text-align: center;
     font-size: 14px;
+    
 }
 
 .displayresults ul {
@@ -273,8 +278,21 @@ span.stars, span.stars span {
 
 span.stars span {
     background-position: 0 0;
+  
 }
 
+.selectoptions{
+	 border:3px solid darkgreen;
+	 width: 250px;
+    height: 40px;
+    text-align: center;
+}
+
+#error_add_here{
+	color:red;
+	text-align: center;
+	margin-left: 350px;
+}
 
 /*--- Start Footer --*/
 footer{
