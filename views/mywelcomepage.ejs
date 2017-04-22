@@ -1,162 +1,197 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<title>TRAVEL GUIDE APP</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-	<link rel="shortcut icon" type="image/png" href="images/logo1.png">
-	
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width , initial-scale=1">
+    <title>TRAVEL GUIDE APP</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="shortcut icon" type="image/png" href="images/logo1.png">
+
 
 </head>
+
 <body>
-<header>
-		<div id="header-inner">
-			<a href="index.html" id="logo"></a>
-			<nav>
-			  <ul>
-				 <li> <a style="font-size:20px;" id="logout" class="logout" href="/logout"> Logout </a>
+    <header>
+        <div id="header-inner">
+            <a href="index.html" id="logo"></a>
+            <nav>
+                <ul>
+                    <li> <a style="font-size:20px;" id="logout" class="logout" href="/logout"> Logout </a>
                         <br>
                         <p style="font-size:14px;">
                             <%= user.username %>
                         </p>
                     </li>
-				</ul>
-			</nav>		
-		</div>
-	</header>
-    <div  class="searchbar">
-    	<form class="form-search">
-                            <label for="inputsearch"> </label>
-                            <input class="inputsearch" id="inputsearch" type="text" placeholder=" Enter Place Name">
-                           
-                           <div class="options">
-                           <select class="selectoptions">
-                              <option value="attraction">POI</option>
-                              <option value="restuarant">Restuarant</option>
-                              <option value="bar">Bar</option>
-                              <option value="accomadation">Accomadation</option>
-                              <option value="kidsactivities">Kids Activities</option>
-                            </select>
-                            </div>
-                            <button class="searchbutton" id="search" name="search" value="search">Search</button>
-        </form>                      
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="searchbar">
+        <form class="form-search">
+            <label for="inputsearch"> </label>
+            <input class="inputsearch" id="inputsearch" type="text" placeholder=" Enter Place Name">
 
-         <div class="displayresults">
-         <ul>
-            
+            <div class="options">
+                <select class="selectoptions">
+                    <option value="attraction">POI</option>
+                    <option value="restuarant">Restuarant</option>
+                    <option value="bar">Bar</option>
+                    <option value="accomadation">Accomadation</option>
+                    <option value="kidsactivities">Kids Activities</option>
+                </select>
+            </div>
+            <button class="searchbutton" type="submit" id="search" name="search" value="search">Search</button>
+        </form>
 
-         </ul>
+        <div class="displayresults">
+         
 
-         </div>
+        </div>
+        <section class="dashboard" id="dashboard">
+            <h2>Favorites</h2>
+            <ul class="favoritesContainer" id="favoritesContainer">
 
+            </ul>
 
-        
-        	</ul>	
-
-        	</div>
-     
-
+        </section>
 
 
     </div>
 
- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script type="text/javascript">
- 	  $(document).ready(function () {
- 	  	 $('span.stars').stars();
-       console.log("Am able to see this message");
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        //STEP 1 - objects and functions definistions
+        function ajaxSearchDisplay(searchVal, querykeyword) {
+            $.ajax({
+                url: '/mywelcomepage',
+                cache: false,
+                type: "POST",
+                data: {
+                    query: querykeyword,
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.results);
+                    displaySearchData(response.results);
+
+                    console.log("success");
+                },
+                fail: function (jqXHR, error, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(error);
+                    console.log(errorThrown);
+                }
+            });
+        }
 
 
+        // To make one change , if the data is undefined , then it should display appropriate error message
+        function displaySearchData(dataMatches) {
+            var buildTheHtmlOutput = "";
 
-        $(".form-search").submit(function(event){
-            event.preventDefault();
-            var selectOptionVal='';
-            console.log("Am able to login to form search");
-            var searchVal = $('#inputsearch').val();
-            console.log("search Val" + searchVal);
-            console.log("Select option inside console");
-            selectOptionVal = $('.selectoptions option:selected').val();
-            var querykeyword = selectOptionVal + " in " + searchVal;
-            console.log(querykeyword);
-            if(searchVal.length > 0 && searchVal !== ''){
-                 $.ajax({
-                     url : '/mywelcomepage',          
-                     cache:false,
-                     type:"POST",
-                     data:{
-                      query : querykeyword,
-                        },
-                     dataType:"json",
-                     success: function (response) {
-                       console.log(response.results);
-                        if (response.redirectTo && response.msg == 'Just go there please') {
-                          console.log(response.results);
-                           var results =  response.results;
-                           var placeOpen='';   
-                               $(".displayresults").html('');
-                                $.each(results, function (i, items) {
-
-                                  if(items.opening_hours){
-                                    if(items.opening_hours.open_now && items.opening_hours.open_now === 'true'){
-                                        placeOpen = 'OPEN';
-                                    }else {
-                                        placeOpen = 'CLOSED';
-                                    }
-                                  }
-
-                                    //console.log(items);
-                                 
-                                    $("<div />", {"class": "displaywishresults"})
-                                    .append(items.name)
-                                    .append('<br />')
-                                    .append(items.formatted_address)
-                                    .append('<br />')
-                                    .append(items.rating)
-                                    .append('<sup><span class="stars">'+ items.rating+ '</span><sup>')
-                                    .append('<br />')
-                                    .append(placeOpen)
-                                    .appendTo(".displayresults");
-                                });
-                              //$(".displayresults").append(trHTML);
-
-                        }
-
-                        console.log("success");
-                      },
-                      fail: function (jqXHR, error, errorThrown) {
-                                      console.log(jqXHR);
-                                      console.log(error);
-                                      console.log(errorThrown);
+            $.each(dataMatches, function (dataMatchesKey, dataMatchesValue) {
+                var placeOpen = "";
+                if (dataMatchesValue.opening_hours) {
+                    if (dataMatchesValue.opening_hours.open_now && dataMatchesValue.opening_hours.open_now === 'true') {
+                        placeOpen = 'OPEN';
+                    } else {
+                        placeOpen = 'CLOSED';
                     }
-                });      
+                }
 
-            }
 
-            else {
-              $(".displayresults").empty();
-              $(".displayresults").append('<span id="error_add_here">Please enter a location name to search</span>');
-            }
-         });
-      
-	  });
+                buildTheHtmlOutput += '<div class="displaywishresults">';
+                buildTheHtmlOutput += '<h4>' + dataMatchesValue.name + '</h4>';
+                buildTheHtmlOutput += '<h6>' + dataMatchesValue.formatted_address + '</h6>';
+                buildTheHtmlOutput += '<span>' + dataMatchesValue.rating + '</span>';
+                buildTheHtmlOutput += '<br />';
+                buildTheHtmlOutput += '<span>' + placeOpen + '</span>';
+                buildTheHtmlOutput += "<div class='searchdata-description'>";
+                buildTheHtmlOutput += "<form >";
+                buildTheHtmlOutput += "<button type='submit' class='addToFavoritesButton'>";
+                buildTheHtmlOutput += "<i class='fa fa-star add-favorite-icon' aria-hidden='true'></i>";
 
- 	   $.fn.stars = function() {
-    	return $(this).each(function() {
-	        // Get the value
-	        var val = parseFloat($(this).html());
-	        // Make sure that the value is in 0 - 5 range, multiply to get width
-	        val = Math.round(val * 4) / 4;
-	        var size = Math.max(0, (Math.min(5, val))) * 16;
-	        // Create stars holder
-	        var $span = $('<span />').width(size);
-	        // Replace the numerical value with stars
-	        $(this).html($span);
-   	 });
-	}
+                  // buildTheHtmlOutput += "<img src='images/add_favorite.png' class='add-favorite-icon'>";
+                buildTheHtmlOutput += "</button>";         
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesValue' value='" + dataMatchesValue.name + "'>";
+                buildTheHtmlOutput += '<br />'
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesAddressValue' value='" + dataMatchesValue.formatted_address + "'>";
+                buildTheHtmlOutput += '<br />'
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesRatingValue' value='" + dataMatchesValue.rating + "'>";
+                buildTheHtmlOutput += '<br />'
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesPlaceOpenValue' value='" + placeOpen + "'>";
+                buildTheHtmlOutput += "</form>";
+                     
+                buildTheHtmlOutput += "</div>";
+                buildTheHtmlOutput += "</div>";
 
- </script>
+            });
+            $(".displayresults").html(buildTheHtmlOutput);
+        }
+
+        $.fn.stars = function () {
+            return $(this).each(function () {
+                // Get the value
+                var val = parseFloat($(this).html());
+                // Make sure that the value is in 0 - 5 range, multiply to get width
+                val = Math.round(val * 4) / 4;
+                var size = Math.max(0, (Math.min(5, val))) * 16;
+                // Create stars holder
+                var $span = $('<span />').width(size);
+                // Replace the numerical value with stars
+                $(this).html($span);
+            });
+        }
+
+
+        //STEP 2 - objects and functions usage
+        $(document).ready(function () {
+            $('span.stars').stars();
+            console.log("Am able to see this message");
+
+
+            //T
+            $(".form-search").submit(function (event) {
+                event.preventDefault();
+                var selectOptionVal = '';
+                console.log("Am able to login to form search");
+                var searchVal = $('#inputsearch').val();
+                console.log("search Val" + searchVal);
+                console.log("Select option inside console");
+                selectOptionVal = $('.selectoptions option:selected').val();
+                var querykeyword = selectOptionVal + " in " + searchVal;
+                console.log(querykeyword);
+                if (searchVal === "") {
+                    $(".displayresults").empty();
+                    $(".displayresults").append('<span id="error_add_here">Please enter a location name to search</span>');
+
+                } else {
+
+                    ajaxSearchDisplay(searchVal, querykeyword);
+
+                }
+            });
+
+            // populateFavoritesContainer();
+        });
+
+        $(document).on('click', '.activity-results .addToFavoritesButton', function (event) {
+            //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+            event.preventDefault();
+
+            $(this).toggleClass("highlight");
+
+            var favoritesValue = $(this).parent().find('.addToFavoritesValue').val();
+            var favoritesAddressValue = $(this).parent().find('.addToFavoritesAddressValue').val();
+            var favoritesRatingValue = $(this).parent().find('.addToFavoritesRatingValue').val();
+            var favoritesPlaceOpenValue = $(this).parent().find('.addToFavoritesPlaceOpenValue').val();
+
+
+        });
+    </script>
 
 </body>
+
 </html>
