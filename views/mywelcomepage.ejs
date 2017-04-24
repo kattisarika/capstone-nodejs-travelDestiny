@@ -50,7 +50,7 @@
 
         </div>
         <section class="dashboard" id="dashboard">
-            <h2>Favorites</h2>
+            <p class="dashboardHeading">Favorites</p>
             <ul class="favoritesContainer" id="favoritesContainer">
 
             </ul>
@@ -62,6 +62,89 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
+
+       function populateFavoritesContainer() {
+        console.log("Am being called in the populateFavoriteContainer")
+             $.ajax({
+                type: "GET",
+                url: "/populate-favorites/",
+                dataType: 'json',
+                success: function(response){
+                    console.log(response);
+                     var buildTheHtmlOutput = "";
+
+                     $.each(response, function(responseKey, responseValue) {
+
+                         console.log("Response Value" , responseValue.name);
+
+                           buildTheHtmlOutput += "<li class='favorites'>";
+                           buildTheHtmlOutput += "<div class='deleteFavorite'>";
+                           buildTheHtmlOutput += "<form class='deleteFavoriteValue'>";
+                           buildTheHtmlOutput += "<input type='hidden' class='deleteFavoriteValueInput' value='" + responseValue._id + "'>";
+                           buildTheHtmlOutput += "<button type='submit' class='deleteFavoriteButton'>";
+                           buildTheHtmlOutput += "<img src='/images/delete_icon.png' class='delete-favorite-icon'>";
+                           buildTheHtmlOutput += "</button>";
+                           buildTheHtmlOutput += "</form>";
+                           buildTheHtmlOutput += "</div>";
+                           buildTheHtmlOutput += '<p>'   + responseValue.name + '</p>';
+                           buildTheHtmlOutput += '<p>'   + responseValue.address + '</p>';
+                           buildTheHtmlOutput += '<p>'   + responseValue.rating + '</p>';
+                           buildTheHtmlOutput += '<p>'   + responseValue.isPlaceOpen + '</p>';
+                        buildTheHtmlOutput += '<br />'
+
+                        buildTheHtmlOutput += "</li>";
+
+
+
+
+                     });
+
+                      $(".favoritesContainer").html(buildTheHtmlOutput);
+                 },
+                fail: function(jqXHR, error, errorThrown){
+                    console.log(jqXHR);
+                    console.log(error);
+                    console.log(errorThrown);
+                  }
+             });   
+       }
+
+
+
+       $(document).on('click', '.deleteFavorite', function(event) {
+            //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+                event.preventDefault();
+                //get the value from the input box
+
+                
+                
+                var favoritesIdToDelete = $(this).parent().find('.deleteFavoriteValueInput').val();
+
+                console.log("The ID WHICH GETS DELETED IS " , favoritesIdToDelete);
+
+
+                var nameObject = {
+                    'name': favoritesIdToDelete
+                };
+
+                $.ajax({
+                        method: 'DELETE',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        url: '/delete-favorites/' + favoritesIdToDelete,
+                    })
+                    .done(function(result) {
+                        populateFavoritesContainer();
+                    })
+                    .fail(function(jqXHR, error, errorThrown) {
+                        console.log(jqXHR);
+                        console.log(error);
+                        console.log(errorThrown);
+                    });
+});
+
+
+
         //STEP 1 - objects and functions definistions
         function ajaxSearchDisplay(searchVal, querykeyword) {
             $.ajax({
@@ -75,7 +158,6 @@
                 success: function (response) {
                     console.log(response.results);
                     displaySearchData(response.results);
-
                     console.log("success");
                 },
                 fail: function (jqXHR, error, errorThrown) {
@@ -148,6 +230,9 @@
 
         //STEP 2 - objects and functions usage
         $(document).ready(function () {
+
+            populateFavoritesContainer();
+
             $('span.stars').stars();
             console.log("Am able to see this message");
 
@@ -177,8 +262,9 @@
             // populateFavoritesContainer();
         });
 
-        $(document).on('click', '.activity-results .addToFavoritesButton', function (event) {
+        $(document).on('click', '.displaywishresults .addToFavoritesButton', function (event) {
             //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+            console.log("Am I coming in the Add To Favorites ")
             event.preventDefault();
 
             $(this).toggleClass("highlight");
@@ -187,6 +273,35 @@
             var favoritesAddressValue = $(this).parent().find('.addToFavoritesAddressValue').val();
             var favoritesRatingValue = $(this).parent().find('.addToFavoritesRatingValue').val();
             var favoritesPlaceOpenValue = $(this).parent().find('.addToFavoritesPlaceOpenValue').val();
+
+            console.log("Am I coming in the Add To Favorites ", favoritesValue);
+            console.log("Am I coming in the Add To Favorites ", favoritesAddressValue);
+            console.log("Am I coming in the Add To Favorites ", favoritesRatingValue);
+            console.log("Am I coming in the Add To Favorites ", favoritesPlaceOpenValue);
+
+            var userSelectionObject = {
+                'name': favoritesValue,
+                'address': favoritesAddressValue,
+                'rating': favoritesRatingValue,
+                'placeOpenVal': favoritesPlaceOpenValue
+            }
+
+            $.ajax({
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(userSelectionObject),
+            url: '/add-to-favorites/',
+            })
+            .done(function(result) {
+                console.log("POST ADD TO FAVORITES" , result);
+                populateFavoritesContainer();
+             })
+            .fail(function(jqXHR, error, errorThrown) {
+               console.log(jqXHR);
+               console.log(error);
+               console.log(errorThrown);
+            });
 
 
         });
