@@ -1,60 +1,164 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<title>TRAVEL GUIDE APP</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-	<link rel="shortcut icon" type="image/png" href="images/logo1.png">
-	
-
-</head>
-
-
-<body>
-
-<header>
-		<div id="header-inner">
-			<a href="index.html" id="logo"></a>
-			<nav>
-				<a href="#" id="menu-icon"></a>
-				<ul>
-					<li><a href="/login" class="current">Login</a></li>
-					<li><a href="/register">Register</a></li>
-					<li><a href="#">Contact</a></li>
-				</ul>
-			</nav>		
-		</div>
-	</header>
-
-	<section class="banner">
-	<div class="banner-inner">
-		<img class="imageholder" src="/images/image1.jpg">
-	</div>
-</section>
-
-   <section class="inner-wrapper">
-  
-
+    <!DOCTYPE html>
+    <html>
+    <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width , initial-scale=1">
+    	<title>TRAVEL GUIDE APP</title>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+     
+      <link rel="stylesheet" type="text/css" href="/css/basicstyles.css">
+    	
     
-    <aside id="tablet2">
-	   <div id="login">
-        
-       
+    	
+
+    </head>
+     <body>
+      <section class="intro">
+        <div class="inner">
+           <div class="content">
+         <h1> Travel Destiny</h1>     
+            <nav>
+                 <a href="#" id="menu-icon"></a>
+                  <ul>
+                   <li>  <a href="#" class="aboutUs">About Us</a></li>
+                  <li>  <a href="#" class="login">Login</a></li>
+                  <li> <a href="#" class="signUp">Register</a></li>
+                  <li><a href="#" class="contact">Contact</a></li>
+                </ul>
+             </nav> 
+                 
+          </div>        
+        </div>
+     
+     <!--End Of Header -->
+
+      <div id="register">     
+         <h2><i class="fa fa-registered" style="margin-right: 10px;" aria-hidden="true"></i>Register</h2>
+      <form id="form-signUp" action="/register" method="post">
+          
+            <fieldset>
+            <p>
+                   <!-- <label for="username"> UserName :</label>-->
+                  <input type="text" name="name" id="name" maxlength="50" placeholder="username" />
+               </p>
+
+               <p><input type="email" name="email" id="email" maxlength="50" placeholder="email"/></p>
+
+               <p> <input type="password" name="password" id="password" maxlength="50" placeholder="password"/></p>
+
+               <p><input type="password" name="confpassword" id="confpassword" maxlength="50" placeholder="confirm password"/></p>
+
+                <p>
+                  <button class="registerbtn" id="submit" >Submit</button>
+               </p>
+                <p class="accnt">Already have an account  <a href="login">Sign In</a></p>
+
+           </fieldset>
+        </form>
        </div>
-</aside>
+
+
+       <div id="smallwriteUp">
+       <p>
+         
+        TravelDestiny is an application which allows an user to mark or pin the place of interest or event or activity. This application is very useful when a user visits a new destination and wants to check Place of Interest (POI), accomadation, restuarants or kids activities of interest for that location. The user can pin the place of interest based on the search and later delete it or retain it for future reference. <br>
+
+        TravelDestiny uses google api to fetch all the required data. The second phase also provides the attractive discounts and promotes tourism to untravelled marvelous destinations. <br>
+
+        We are here to serve you better. You have a feedback to improvise this application, then please do let us know! 
+
+
+       </p>
+      </div>  
+       <!-- End of Register -->
+
+       <div id="login">     
+         <h2><i class="fa fa-lock" style="margin-right: 10px;" aria-hidden="true"></i>Sign In</h2>
+        <form id="form-login" action="/login" method="post">
+          
+            <fieldset>
+            <p>
+                   <!-- <label for="username"> UserName :</label>-->
+                  <input type="text" name="username" id="username" maxlength="50" placeholder="username" />
+               </p>
+
+                <p>
+                   <!-- <label for="password"> Password:</label> -->
+                   <input type="password" name="password" id="password" maxlength="50" placeholder="password" />
+               </p>
 
 
 
+                <!-- <li>
+                    <label for="chkbox">Home Business Owner?</label>
+                    <input type="checkbox" name="chkbox" id="cbox1" value="first_checkbox">
+                </li> -->
+
+                <p>
+                    <button class="loginbtn" >Login</button>
+                </p>
+
+           </fieldset>
+        </form>
+       </div>
+
+   <!-- End of Login -->
+
+     <div id="contact">
+       <p> Welcome to Travel Destiny Demo Project!<br>
+       My Github handle: <a href="https://github.com/kattisarika">kattisarika</a>  <br>
+       Try and let us know if you find it useful!</p>
+     </div>
+      
 </section>
 
-</body>
-</html>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+        $(document).ready(function () {
+          $("#register").hide();
+          $("#login").hide();
+          $("#contact").hide();
+          $("#smallwriteUp").hide();
+
+          $(".login").click(function () {
+             $("#register").hide();
+             $("#contact").hide();
+             $("#smallwriteUp").hide();
+               $("#login").show();
+              
+          });
+         
+
+        	 $('.signUp').click(function () {
+                  $("#login").hide();
+                  $("#contact").hide();
+                  $("#smallwriteUp").hide();
+        	 	     $("#register").show();
+                
+        	  });
+
+           $('.contact').click(function() {
+            $("#register").hide();
+            $("#smallwriteUp").hide();
+            $("#login").hide();
+            $("#contact").show();
+
+           })
+
+           $('.aboutUs').click(function(){
+              $("#register").hide();
+              $("#login").hide();
+              $("#contact").hide();
+              $("#smallwriteUp").show();
+           })
+
+        });
+
+        </script>
 
 
+    </body>
+    </html>
 
 
-</body>
-
-</html>

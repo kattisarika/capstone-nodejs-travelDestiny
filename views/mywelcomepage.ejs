@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width , initial-scale=1">
     <title>TRAVEL GUIDE APP</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/css/welcomepage.css">
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/png" href="images/logo1.png">
 
@@ -13,9 +13,10 @@
 </head>
 
 <body>
-    <header>
-        <div id="header-inner">
-            <a href="index.html" id="logo"></a>
+    <section class="intro">
+        <div class="inner">
+           <div class="content">
+            <h1> Travel Destiny</h1>      
             <nav>
                 <ul>
                     <li> <a style="font-size:20px;" id="logout" class="logout" href="/logout"> Logout </a>
@@ -26,14 +27,13 @@
                     </li>
                 </ul>
             </nav>
+            </div>        
         </div>
-    </header>
-    <div class="searchbar">
+  
         <form class="form-search">
             <label for="inputsearch"> </label>
             <input class="inputsearch" id="inputsearch" type="text" placeholder=" Enter Place Name">
 
-            <div class="options">
                 <select class="selectoptions">
                     <option value="attraction">POI</option>
                     <option value="restuarant">Restuarant</option>
@@ -41,9 +41,12 @@
                     <option value="accomadation">Accomadation</option>
                     <option value="kidsactivities">Kids Activities</option>
                 </select>
-            </div>
+          
+           
             <button class="searchbutton" type="submit" id="search" name="search" value="search">Search</button>
         </form>
+  
+
 
         <div class="displayresults">
          
@@ -58,13 +61,13 @@
         </section>
 
 
-    </div>
+   
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
 
        function populateFavoritesContainer() {
-        console.log("Am being called in the populateFavoriteContainer")
+       // console.log("Am being called in the populateFavoriteContainer")
              $.ajax({
                 type: "GET",
                 url: "/populate-favorites/",
@@ -75,7 +78,7 @@
 
                      $.each(response, function(responseKey, responseValue) {
 
-                         console.log("Response Value" , responseValue.name);
+                        // console.log("Response Value" , responseValue.name);
 
                            buildTheHtmlOutput += "<li class='favorites'>";
                            buildTheHtmlOutput += "<div class='deleteFavorite'>";
@@ -120,7 +123,7 @@
                 
                 var favoritesIdToDelete = $(this).parent().find('.deleteFavoriteValueInput').val();
 
-                console.log("The ID WHICH GETS DELETED IS " , favoritesIdToDelete);
+               // console.log("The ID WHICH GETS DELETED IS " , favoritesIdToDelete);
 
 
                 var nameObject = {
@@ -241,13 +244,13 @@
             $(".form-search").submit(function (event) {
                 event.preventDefault();
                 var selectOptionVal = '';
-                console.log("Am able to login to form search");
+               // console.log("Am able to login to form search");
                 var searchVal = $('#inputsearch').val();
-                console.log("search Val" + searchVal);
-                console.log("Select option inside console");
+               // console.log("search Val" + searchVal);
+               // console.log("Select option inside console");
                 selectOptionVal = $('.selectoptions option:selected').val();
                 var querykeyword = selectOptionVal + " in " + searchVal;
-                console.log(querykeyword);
+               // console.log(querykeyword);
                 if (searchVal === "") {
                     $(".displayresults").empty();
                     $(".displayresults").append('<span id="error_add_here">Please enter a location name to search</span>');
@@ -264,7 +267,7 @@
 
         $(document).on('click', '.displaywishresults .addToFavoritesButton', function (event) {
             //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
-            console.log("Am I coming in the Add To Favorites ")
+            //console.log("Am I coming in the Add To Favorites ")
             event.preventDefault();
 
             $(this).toggleClass("highlight");
@@ -274,10 +277,10 @@
             var favoritesRatingValue = $(this).parent().find('.addToFavoritesRatingValue').val();
             var favoritesPlaceOpenValue = $(this).parent().find('.addToFavoritesPlaceOpenValue').val();
 
-            console.log("Am I coming in the Add To Favorites ", favoritesValue);
-            console.log("Am I coming in the Add To Favorites ", favoritesAddressValue);
-            console.log("Am I coming in the Add To Favorites ", favoritesRatingValue);
-            console.log("Am I coming in the Add To Favorites ", favoritesPlaceOpenValue);
+            //console.log("Am I coming in the Add To Favorites ", favoritesValue);
+            //console.log("Am I coming in the Add To Favorites ", favoritesAddressValue);
+           // console.log("Am I coming in the Add To Favorites ", favoritesRatingValue);
+           // console.log("Am I coming in the Add To Favorites ", favoritesPlaceOpenValue);
 
             var userSelectionObject = {
                 'name': favoritesValue,

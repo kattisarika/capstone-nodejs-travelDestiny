@@ -53,7 +53,7 @@ request(gurl, function(error, response, body) {
 
         var arr = JSON.parse(response.body);
         var obj = arr[0];
-        console.log(obj.id);
+        // console.log(obj.id);
     }
 });
 
@@ -72,11 +72,11 @@ passport.use(new passportLocal.Strategy(function(username, password, done) {
                 message: 'Unknown user'
             });
         } else {
-            console.log(username);
+            //console.log(username);
             var hash = username.password;
             if (bcrypt.compareSync(password, hash)) {
 
-                console.log("Autehntication passed");
+                //console.log("Autehntication passed");
                 return done(null, { id: username._id, username: username.username });
 
             } else {
@@ -92,9 +92,46 @@ passport.use(new passportLocal.Strategy(function(username, password, done) {
 }));
 
 
+app.post('/register', function(req, res) {
+    // console.log("In post /register", req.body);
+
+    if (req.body.name &&
+        req.body.email &&
+        req.body.password &&
+        req.body.confpassword)
+
+
+
+        if (req.body.password !== req.body.confpassword) {
+            var err = new Error("passwords do not match");
+            err.status = 400;
+            res.send(err);
+        } else {
+
+            var newUser = new User({
+                username: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            });
+            //  console.log("All data captured in backend" + newUser.username + "," + newUser.email + "," + newUser.password);
+
+            User.createUser(newUser, function(err, user) {
+                if (err) throw err;
+                res.redirect('login');
+
+            });
+
+        }
+
+});
+
+
+
+
+
 
 app.get('/', function(req, res) {
-    console.log("IS In Index", req.isAuthenticated());
+    //console.log("IS In Index", req.isAuthenticated());
     if (req.isAuthenticated())
         console.log(req.user.username);
     //console.log("Request object is " , req.body );
@@ -120,7 +157,7 @@ app.get('/login', function(req, res) {
         isAuthenticated: req.isAuthenticated(),
         user: req.user
     });
-    console.log("Inside login function", req.isAuthenticated());
+    // console.log("Inside login function", req.isAuthenticated());
     //console.log("Inside login function", req.body);
 });
 
@@ -144,7 +181,7 @@ passport.deserializeUser(function(id, done) {
 
 
 app.get('/mywelcomepage', isLoggedIn, function(req, res) {
-        console.log("In GEt welcome page", req.user);
+        // console.log("In GEt welcome page", req.user);
 
         res.render('mywelcomepage', {
             isAuthenticated: req.isAuthenticated(),
@@ -160,11 +197,11 @@ app.get('/mywelcomepage', isLoggedIn, function(req, res) {
 
 
 app.post('/mywelcomepage', function(req, res) {
-    console.log("INSIDE POST /WELCOME" + JSON.stringify(req.body.query));
+    // console.log("INSIDE POST /WELCOME" + JSON.stringify(req.body.query));
     var api_key = 'AIzaSyDpTAXl2VTBWoF-aRi7BG4xXHG_GiuEYms';
     var querysearch = JSON.stringify(req.body.query);
-    console.log("In Post welcome page", req.user);
-    console.log("In Post welcome page", req.isAuthenticated());
+    // console.log("In Post welcome page", req.user);
+    // console.log("In Post welcome page", req.isAuthenticated());
 
     request({
         url: `https://maps.googleapis.com/maps/api/place/textsearch/xml?query=${querysearch}&key=AIzaSyDpTAXl2VTBWoF-aRi7BG4xXHG_GiuEYms`
@@ -177,7 +214,7 @@ app.post('/mywelcomepage', function(req, res) {
             var jsonresultset = parser.toJson(response.body);
             var jresultset = JSON.parse(jsonresultset);
             //console.log(jresultset);
-            console.log(jresultset.PlaceSearchResponse.result);
+            //console.log(jresultset.PlaceSearchResponse.result);
 
 
             if (jresultset.PlaceSearchResponse.status === "OVER_QUERY_LIMIT") {
@@ -193,7 +230,7 @@ app.post('/mywelcomepage', function(req, res) {
 
 
                 console.log("AM I IN the ELSE LOOP");
-                console.log(jresultset.PlaceSearchResponse.result);
+                //console.log(jresultset.PlaceSearchResponse.result);
 
                 retStatus = 'Success';
                 res.send({
@@ -260,7 +297,7 @@ app.get('/mywelcomepage/search', isLoggedIn, function(req, res) {
 
             } else {
 
-                console.log(jresultset.PlaceSearchResponse.result);
+                // console.log(jresultset.PlaceSearchResponse.result);
 
                 console.log("AM I IN the ELSE LOOP");
 
@@ -287,11 +324,11 @@ app.get('/mywelcomepage/search', isLoggedIn, function(req, res) {
 
 app.post('/add-to-favorites', isLoggedIn, function(req, res) {
 
-    console.log("Name", req.body.name);
-    console.log("Address", req.body.address);
-    console.log("Rating", req.body.rating);
-    console.log("Place Open", req.body.placeOpenVal);
-    console.log("Name is:", req.user.username);
+    // console.log("Name", req.body.name);
+    // console.log("Address", req.body.address);
+    // console.log("Rating", req.body.rating);
+    // console.log("Place Open", req.body.placeOpenVal);
+    //  console.log("Name is:", req.user.username);
 
     //db connection and data queries
     Userselection.create({
@@ -313,7 +350,7 @@ app.post('/add-to-favorites', isLoggedIn, function(req, res) {
 
 
 app.get('/populate-favorites', isLoggedIn, function(req, res) {
-    console.log("Am I coming in AdD to Favorites Get Method", req.user.username);
+    // console.log("Am I coming in AdD to Favorites Get Method", req.user.username);
     Userselection.find({
         username: req.user.username
     }, function(err, item) {
