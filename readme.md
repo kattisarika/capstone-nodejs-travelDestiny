@@ -13,6 +13,8 @@ and also provide better discounts for the regular users.
 ##Initial UX and PRD
  The PRD and initial UX are in the below link 
  
+ LandingPage ![Screenshot](https://github.com/kattisarika/capstone-nodejs-travelDestiny/blob/master/readMeImages/landingpage.png)
+ 
  Login Screen ![Screenshot](https://github.com/kattisarika/capstone-nodejs-travelDestiny/blob/master/prd/images/Login-Page.png)
  Registration ![Screenshot](https://github.com/kattisarika/capstone-nodejs-travelDestiny/blob/master/prd/images/Register.png)
  Search 
