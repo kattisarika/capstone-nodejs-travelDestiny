@@ -17,7 +17,7 @@ body {
     width: 100%;
     height: 100%;
     margin: auto;
-    background: url('/images/Volta_lake_from_the_Saint_Barbara_Church.JPG');
+    background: url('../images/imagechg.jpg');
     opacity: 1;
     display: block;
     /* top: 0; */
@@ -29,11 +29,14 @@ body {
     vertical-align: top;
     width: 100%;
     max-width: none;
+    border-bottom: 1px solid white;
 }
 
 .content {
     display: block;
     width: 100%;
+    background: #136BE8;
+    padding: 1%;
 }
 
 h1,
@@ -43,8 +46,7 @@ nav {
 
 h1 {
     width: 23%;
-    color: #136BE8;
-    text-shadow: 0px 0px 500px #000;
+    color: white;
     font-size: 200%;
     margin-left: 2 rem;
     margin-left: 2%;
@@ -69,8 +71,8 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    font-size: 125%;
-    background: #136BE8;
+    font-size: 100%;
+    /*background: #136BE8;*/
     color: #e3e3e3;
     font-weight: bold;
     text-shadow: 0px 0px 500px #000;
@@ -86,13 +88,15 @@ a:hover {
 
 #register {
     width: 300px;
+    background: rgba(0, 0, 0, 0.5);
     line-height: 0.5rem;
     margin-left: auto;
     /* float: left; */
     margin-right: auto;
-    -webkit-border-radius: 20px;
+    margin-top: 9%;
+    /* -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
-    border-radius: 20px;
+    border-radius: 20px;*/
     box-shadow: 0px 0px 25px white;
     border: 1px solid white;
     text-align: center;
@@ -112,9 +116,9 @@ a:hover {
 }*/
 
 #register h2 {
-    color: #136BE8;
+    color: white;
     padding: 5px;
-    text-shadow: 0px 0px 14px rgba(255, 255, 255, 1);
+    /* text-shadow: 0px 0px 14px rgba(255, 255, 255, 1);*/
     line-height: 70px;
 }
 
@@ -137,9 +141,9 @@ a:hover {
 }
 
 #register fieldset input {
-    -webkit-border-radius: 10px;
+    /* -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;
+    border-radius: 10px;*/
 }
 
 #register fieldset input[type="text"],
@@ -159,33 +163,40 @@ fieldset input[type="email"] {
     width: 250px;
     height: 40px;
     font-weight: bold;
-    -webkit-border-radius: 10px;
+    /*  -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;
+    border-radius: 10px;*/
 }
 
 .accnt {
-    color: darkgreen;
-    font-weight: bold;
-    text-shadow: 0px 0px 14px rgba(255, 255, 255, 1);
+    margin-top: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-weight: bolder;
+    /*text-shadow: 0px 0px 14px rgba(255, 255, 255, 1);*/
 }
 
-.accnt a {
-    color: #136BE8;
+.accnta {
+    color: white;
+    font-size: 24px;
     font-weight: bold;
     text-decoration: none;
 }
 
 #login {
     width: 300px;
+    background: rgba(0, 0, 0, 0.5);
     line-height: 0.5rem;
     margin-left: auto;
+    margin-top: 12%;
     /* float: left; */
     margin-right: auto;
-    -webkit-border-radius: 20px;
+    /*  -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 25px white;
+    border-radius: 20px; */
+    /* box-shadow: 0px 0px 25px white;*/
     border: 1px solid white;
     text-align: center;
     padding-left: 15px;
@@ -204,9 +215,9 @@ fieldset input[type="email"] {
 }*/
 
 #login h2 {
-    color: #136BE8;
+    color: white;
     padding: 5px;
-    text-shadow: 0px 0px 14px rgba(255, 255, 255, 1);
+    /* text-shadow: 0px 0px 14px rgba(255, 255, 255, 1);*/
     line-height: 70px;
 }
 
@@ -229,9 +240,9 @@ fieldset input[type="email"] {
 }
 
 #login fieldset input {
-    -webkit-border-radius: 10px;
+    /* -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;
+    border-radius: 10px;*/
 }
 
 #login fieldset input[type="text"],
@@ -246,67 +257,118 @@ fieldset input[type="email"] {
 }
 
 .loginbtn {
-    background-color: #eee;
-    color: #777;
+    background-color: #136BE8;
+    color: white;
     padding: 4px 10px;
     width: 250px;
     height: 40px;
     font-weight: bold;
-    -webkit-border-radius: 10px;
+    /*  -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;
+    border-radius: 10px;*/
 }
 
 #contact {
-    background: #e0e0e0;
-    width: 30%;
-    line-height: 1rem;
+    width: 400px;
+    /*background: #fafafb;*/
+    background: rgba(0, 0, 0, 0.8);
+    line-height: 1.5rem;
     margin-left: auto;
     /* float: left; */
     margin-right: auto;
-    margin-top: 2%;
-    -webkit-border-radius: 20px;
+    margin-top: 10%;
+    /*   -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
-    border-radius: 20px;
-    border: 1px solid white;
+    border-radius: 20px;*/
+    /* text-shadow: 200px 200px 204px rgba(255, 255, 255, 104);
+    box-shadow: 10px 10px 5px #136BE8;*/
+    border: 1px solid #abadac;
     text-align: left;
     padding-left: 15px;
     padding-right: 15px;
 }
 
 #contact p {
-    color: darkblue;
+    color: white;
     text-align: center;
     padding: 5px;
     /* box-shadow: 10px 10px 5px #136BE8;*/
 }
 
-#smallwriteUp {
+#contact a {
+    color: white;
+    padding: 5px;
+    /* box-shadow: 10px 10px 5px #136BE8;*/
+}
+
+#contact a:hover {
+    color: red;
+    padding: 5px;
+    /* box-shadow: 10px 10px 5px #136BE8;*/
+}
+
+
+/*#smallwriteUp {
     background: #e0e0e0;
     width: 60%;
     margin-left: auto;
-    /* float: left; */
+   
     margin-right: auto;
-    margin-top: 2%;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    box-shadow: 10px 10px 5px #136BE8;
+    margin-top: 10%;
+   
     border: 1px solid white;
     text-align: left;
     padding-left: 15px;
     padding-right: 15px;
-}
+}*/
 
 #smallwriteUp {
     font-family: 'proxima-nova', sans-serif;
-    color: #2F4F4F;
-    text-shadow: 0px 0px 500px #000;
-    font-size: 14px;
+    color: white;
+    font-size: 18px;
     line-height: 2rem;
-    transition: border 0.4s, color 0.4s;
-    background: #fff;
+    /*transition: border 0.4s, color 0.4s;*/
+    background: rgba(0, 0, 0, 0.8);
+    /*background: #fff;*/
     border: 1px solid #abadac;
-    text-shadow: 200px 200px 204px rgba(255, 255, 255, 104);
-    box-shadow: 10px 10px 5px #136BE8;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 10%;
+    /* text-shadow: 200px 200px 204px rgba(255, 255, 255, 104);
+    box-shadow: 10px 10px 5px #136BE8;*/
+}
+
+.loginconf {
+    background: rgba(0, 0, 0, 0.5);
+    width: 300px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 50px;
+    margin-left: 550px
+}
+
+.cancel1btn {
+    background-color: #136BE8;
+    color: white;
+    padding: 4px 10px;
+    width: 120px;
+    height: 40px;
+    font-weight: bold;
+}
+
+.login1btn {
+    background-color: #136BE8;
+    color: white;
+    padding: 4px 10px;
+    width: 120px;
+    height: 40px;
+    font-weight: bold;
+    /*  -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;*/
 }

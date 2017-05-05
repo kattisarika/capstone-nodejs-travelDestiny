@@ -39,10 +39,10 @@
             <fieldset>
             <p>
                    <!-- <label for="username"> UserName :</label>-->
-                  <input type="text" name="name" id="name" maxlength="50" placeholder="username" />
+                  <input type="text" name="name" id="name" maxlength="50" placeholder="username"  />
                </p>
 
-               <p><input type="email" name="email" id="email" maxlength="50" placeholder="email"/></p>
+               <p><input type="email" name="email" id="email" maxlength="50" placeholder="email" /></p>
 
                <p> <input type="password" name="password" id="password" maxlength="50" placeholder="password"/></p>
 
@@ -51,7 +51,7 @@
                 <p>
                   <button class="registerbtn" id="submit" >Submit</button>
                </p>
-                <p class="accnt">Already have an account  <a href="#" class="login">Sign In</a></p>
+                <span class="accnt">Already have an account </span>  <br><a class="accnta" href="#" class="login">Sign In</a>
 
            </fieldset>
         </form>
@@ -79,12 +79,12 @@
             <fieldset>
             <p>
                    <!-- <label for="username"> UserName :</label>-->
-                  <input type="text" name="username" id="username" maxlength="50" placeholder="username" />
+                  <input type="text" name="username" id="username" maxlength="50" placeholder="username" value="demo"/>
                </p>
 
                 <p>
                    <!-- <label for="password"> Password:</label> -->
-                   <input type="password" name="password" id="password" maxlength="50" placeholder="password" />
+                   <input type="password" name="password" id="password" maxlength="50" placeholder="password" value="demo"/>
                </p>
 
 
@@ -95,7 +95,8 @@
                 </li> -->
 
                 <p>
-                    <button class="loginbtn" >Login</button>
+                    <button class="login1btn" >Login</button>
+                     <button class="cancel1btn" >Cancel</button>
                 </p>
 
            </fieldset>
@@ -119,6 +120,8 @@
           $("#register").hide();
           $("#login").hide();
           $("#contact").hide();
+
+
           
 
           $(".login").click(function () {
@@ -146,7 +149,10 @@
 
            })
 
-          
+            $(".cancel1btn").click(function () {
+               event.preventDefault();
+               window.location.replace("/")
+            });
 
         });
 

@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/basicstyles.css">
      
     
     
@@ -25,9 +25,8 @@
            <nav>
                  <a href="#" id="menu-icon"></a>
                   <ul>
-                  <li>  <a href="/login"  class="login">Login</a></li>
-                  <li> <a href="#" class="signUp">Register</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li>  <a href="/"  class="login">Home Page</a></li>
+                 
                 </ul>
              </nav> 
           </div>        
@@ -37,24 +36,22 @@
 
     
 
-      
-
-     
-     <!--End Of Header -->
+        <h1 class="loginconf"> Welcome to Travel Destiny </h1>   
    
-      <div id="login">     
+      <div id="login">  
+
          <h2><i class="fa fa-lock" style="margin-right: 10px;" aria-hidden="true"></i>Sign In</h2>
         <form id="form-login" action="" method="post">
           
             <fieldset>
             <p>
                    <!-- <label for="username"> UserName :</label>-->
-                  <input type="text" name="username" id="username" maxlength="50" placeholder="username" />
+                  <input type="text" name="username" id="username" maxlength="50" placeholder="username" value="demo"/>
                </p>
 
                 <p>
                    <!-- <label for="password"> Password:</label> -->
-                   <input type="password" name="password" id="password" maxlength="50" placeholder="password" />
+                   <input type="password" name="password" id="password" maxlength="50" placeholder="password" value="demo"/>
                </p>
 
 
@@ -65,7 +62,8 @@
                 </li> -->
 
                 <p>
-                    <button class="loginbtn" >Login</button>
+                    <button class="login1btn" >Login</button>
+                    <button class="cancel1btn" >Cancel</button>
                 </p>
 
            </fieldset>
@@ -75,5 +73,15 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
     </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+      
+          $(".cancel1btn").click(function () {
+               event.preventDefault();
+                history.back(1);
+            });
+              
+          });
+  </script>
 </body>
 </html>

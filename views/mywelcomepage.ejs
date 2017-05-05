@@ -84,12 +84,12 @@
                            buildTheHtmlOutput += "<div class='deleteFavorite'>";
                            buildTheHtmlOutput += "<form class='deleteFavoriteValue'>";
                            buildTheHtmlOutput += "<input type='hidden' class='deleteFavoriteValueInput' value='" + responseValue._id + "'>";
-                           buildTheHtmlOutput += "<button type='submit' class='deleteFavoriteButton'>";
-                           buildTheHtmlOutput += "<img src='/images/delete_icon.png' class='delete-favorite-icon'>";
+                           buildTheHtmlOutput += "<button type='submit' class='deleteFavoriteButton'>";  
+                           buildTheHtmlOutput += "<img src='/images/delete_ic.png' class='delete-favorite-icon'>";
                            buildTheHtmlOutput += "</button>";
                            buildTheHtmlOutput += "</form>";
                            buildTheHtmlOutput += "</div>";
-                           buildTheHtmlOutput += '<p>'   + responseValue.name + '</p>';
+                           buildTheHtmlOutput += '<p>'   + responseValue.name + '<p>';
                            buildTheHtmlOutput += '<p>'   + responseValue.address + '</p>';
                            buildTheHtmlOutput += '<p>'   + responseValue.rating + '</p>';
                            buildTheHtmlOutput += '<p>'   + responseValue.isPlaceOpen + '</p>';
@@ -150,6 +150,8 @@
 
         //STEP 1 - objects and functions definistions
         function ajaxSearchDisplay(searchVal, querykeyword) {
+            console.log("Search Val ", searchVal);
+            console.log("Query Val ", querykeyword)
             $.ajax({
                 url: '/mywelcomepage',
                 cache: false,
@@ -159,9 +161,25 @@
                 },
                 dataType: "json",
                 success: function (response) {
+                    console.log("Outside IF ELSE", response.status);
+                  
+                    if(response.results){
                     console.log(response.results);
+
                     displaySearchData(response.results);
                     console.log("success");
+                 }else {
+                     console.log("Inside Else" , response);
+                      if(response.status === "OVER_QUERY_LIMIT"){
+                    $(".displayresults").empty();
+                    $(".displayresults").append('<span id="error_add_here">API Query Limit exceeded!</span>');
+
+                   }else {
+
+                    $(".displayresults").empty();
+                    $(".displayresults").append('<span id="error_add_here">There are no results from your search!</span>');
+                        }
+                 }
                 },
                 fail: function (jqXHR, error, errorThrown) {
                     console.log(jqXHR);
@@ -174,12 +192,32 @@
 
         // To make one change , if the data is undefined , then it should display appropriate error message
         function displaySearchData(dataMatches) {
-            var buildTheHtmlOutput = "";
+           var buildTheHtmlOutput = "";
+           var placeOpen = "";
+           var locname = ""; 
+           var fadd = "";
+           var rating ="";
+           var errorMessage = " No search results to display, Please search again";
+           //console.log("Verifying this one" , dataMatches.name);
 
-            $.each(dataMatches, function (dataMatchesKey, dataMatchesValue) {
-                var placeOpen = "";
-                if (dataMatchesValue.opening_hours) {
-                    if (dataMatchesValue.opening_hours.open_now && dataMatchesValue.opening_hours.open_now === 'true') {
+           console.log("Verifying this one" , dataMatches.length);
+           
+
+           if(dataMatches.name){
+                 if (dataMatches.name) {
+                    locname = dataMatches.name;
+                }
+
+                if(dataMatches.formatted_address){
+                    fadd = dataMatches.formatted_address
+                }
+
+                 if(dataMatches.rating){
+                    rating = dataMatches.rating;
+                }
+
+                if (dataMatches.opening_hours) {
+                    if (dataMatches.opening_hours.open_now && dataMatches.opening_hours.open_now === 'true') {
                         placeOpen = 'OPEN';
                     } else {
                         placeOpen = 'CLOSED';
@@ -188,11 +226,70 @@
 
 
                 buildTheHtmlOutput += '<div class="displaywishresults">';
-                buildTheHtmlOutput += '<h4>' + dataMatchesValue.name + '</h4>';
-                buildTheHtmlOutput += '<h6>' + dataMatchesValue.formatted_address + '</h6>';
-                buildTheHtmlOutput += '<span>' + dataMatchesValue.rating + '</span>';
+                buildTheHtmlOutput += '<h4>' + locname + '</h4>';
+                buildTheHtmlOutput += '<h6>' + fadd + '</h6>';
+                buildTheHtmlOutput += '<span>' + rating + '</span>';
                 buildTheHtmlOutput += '<br />';
                 buildTheHtmlOutput += '<span>' + placeOpen + '</span>';
+
+
+                buildTheHtmlOutput += "<div class='searchdata-description'>";
+                buildTheHtmlOutput += "<form >";
+                buildTheHtmlOutput += "<button type='submit' class='addToFavoritesButton'>";
+                buildTheHtmlOutput += "<i class='fa fa-star add-favorite-icon' aria-hidden='true'></i>";
+
+                  // buildTheHtmlOutput += "<img src='images/add_favorite.png' class='add-favorite-icon'>";
+                buildTheHtmlOutput += "</button>";         
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesValue' value='" + dataMatches.name + "'>";
+                buildTheHtmlOutput += '<br />'
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesAddressValue' value='" + dataMatches.formatted_address + "'>";
+                buildTheHtmlOutput += '<br />'
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesRatingValue' value='" + dataMatches.rating + "'>";
+                buildTheHtmlOutput += '<br />'
+                buildTheHtmlOutput += "<input type='hidden' class='addToFavoritesPlaceOpenValue' value='" + placeOpen + "'>";
+                buildTheHtmlOutput += "</form>";
+                     
+                buildTheHtmlOutput += "</div>";
+                buildTheHtmlOutput += "</div>";
+
+           }else {
+
+
+
+            $.each(dataMatches, function (dataMatchesKey, dataMatchesValue) {
+              
+               
+                if (dataMatchesValue.name) {
+                    locname = dataMatchesValue.name;
+                }
+
+                if(dataMatchesValue.formatted_address){
+                    fadd = dataMatchesValue.formatted_address
+                }
+
+                 if(dataMatchesValue.rating){
+                    rating = dataMatchesValue.rating;
+                }
+
+                if (dataMatchesValue.opening_hours) {
+                    if (dataMatchesValue.opening_hours.open_now && dataMatchesValue.opening_hours.open_now === 'true') {
+                        placeOpen = 'OPEN';
+                    } else {
+                        placeOpen = 'CLOSED';
+                    }
+                }
+
+                console.log("Loc Name" , locname);
+              
+                if( locname!="" || locname != null  &&  fadd!="" || fadd!= null){
+
+                buildTheHtmlOutput += '<div class="displaywishresults">';
+                buildTheHtmlOutput += '<h4>' + locname + '</h4>';
+                buildTheHtmlOutput += '<h6>' + fadd + '</h6>';
+                buildTheHtmlOutput += '<span>' + rating + '</span>';
+                buildTheHtmlOutput += '<br />';
+                buildTheHtmlOutput += '<span>' + placeOpen + '</span>';
+             
                 buildTheHtmlOutput += "<div class='searchdata-description'>";
                 buildTheHtmlOutput += "<form >";
                 buildTheHtmlOutput += "<button type='submit' class='addToFavoritesButton'>";
@@ -211,8 +308,12 @@
                      
                 buildTheHtmlOutput += "</div>";
                 buildTheHtmlOutput += "</div>";
+            }else {
+                 buildTheHtmlOutput += '<h4>' + errorMessage + '</h4>';
+            }
 
             });
+          }
             $(".displayresults").html(buildTheHtmlOutput);
         }
 
@@ -242,15 +343,16 @@
 
             //T
             $(".form-search").submit(function (event) {
+
                 event.preventDefault();
                 var selectOptionVal = '';
-               // console.log("Am able to login to form search");
+                console.log("Am able to login to form search");
                 var searchVal = $('#inputsearch').val();
                // console.log("search Val" + searchVal);
                // console.log("Select option inside console");
                 selectOptionVal = $('.selectoptions option:selected').val();
                 var querykeyword = selectOptionVal + " in " + searchVal;
-               // console.log(querykeyword);
+                console.log(querykeyword);
                 if (searchVal === "") {
                     $(".displayresults").empty();
                     $(".displayresults").append('<span id="error_add_here">Please enter a location name to search</span>');

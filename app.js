@@ -48,7 +48,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 
-request(gurl, function(error, response, body) {
+request(g1url, function(error, response, body) {
     if (!error && response.statuscode == 200) {
 
         var arr = JSON.parse(response.body);
@@ -117,13 +117,19 @@ app.post('/register', function(req, res) {
 
             User.createUser(newUser, function(err, user) {
                 if (err) throw err;
-                res.redirect('login');
+                res.redirect("/login");
 
             });
 
         }
 
 });
+
+app.get('/register', function(req, res) {
+    console.log("DO I GET REGISTER GET CALLED ");
+    res.render('/');
+
+})
 
 
 
@@ -204,55 +210,48 @@ app.post('/mywelcomepage', function(req, res) {
     // console.log("In Post welcome page", req.isAuthenticated());
 
     request({
-        url: `https://maps.googleapis.com/maps/api/place/textsearch/xml?query=${querysearch}&key=AIzaSyDpTAXl2VTBWoF-aRi7BG4xXHG_GiuEYms`
+        url: `https://maps.googleapis.com/maps/api/place/textsearch/xml?query=${querysearch}&key=AIzaSyB_pTdwi_q5S4kWMUi0AUouZg2IVNyWuio`
+            // url: `https://maps.googleapis.com/maps/api/place/textsearch/xml?query=${querysearch}&key=AIzaSyDpTAXl2VTBWoF-aRi7BG4xXHG_GiuEYms`
     }, function(error, response, body) {
         if (error) {
             console.log(error);
         } else {
 
-            //console.log(response.body);
+            console.log(response.body);
             var jsonresultset = parser.toJson(response.body);
             var jresultset = JSON.parse(jsonresultset);
             //console.log(jresultset);
             //console.log(jresultset.PlaceSearchResponse.result);
 
 
-            if (jresultset.PlaceSearchResponse.status === "OVER_QUERY_LIMIT") {
-
-                res.render('mywelcomepage', {
-                    isAuthenticated: req.isAuthenticated(),
-                    user: req.user,
-                    results: jresultset.PlaceSearchResponse
-
-                });
-
-            } else {
 
 
-                console.log("AM I IN the ELSE LOOP");
-                //console.log(jresultset.PlaceSearchResponse.result);
 
-                retStatus = 'Success';
-                res.send({
-                    retStatus: retStatus,
-                    results: jresultset.PlaceSearchResponse.result,
-                    redirectTo: '/mywelcomepage',
-                    msg: 'Just go there please' // this should help
-                });
+            console.log("AM I IN the ELSE LOOP");
+            //console.log(jresultset.PlaceSearchResponse.result);
+
+            retStatus = 'Success';
+            res.send({
+                retStatus: retStatus,
+                status: jresultset.PlaceSearchResponse.status,
+                results: jresultset.PlaceSearchResponse.result,
+                redirectTo: '/mywelcomepage',
+                msg: 'Just go there please' // this should help
+            });
 
 
 
 
 
-                /*   res.render('mywelcomepage', {
-                       isAuthenticated: req.isAuthenticated(),
-                       user: req.user,
-                       results: jresultset.PlaceSearchResponse.result,
-                       msg: 'Just go there please',
-                        retStatus: retStatus
+            /*   res.render('mywelcomepage', {
+                   isAuthenticated: req.isAuthenticated(),
+                   user: req.user,
+                   results: jresultset.PlaceSearchResponse.result,
+                   msg: 'Just go there please',
+                    retStatus: retStatus
 
-                   }); */
-            }
+               }); */
+
         }
     });
 
